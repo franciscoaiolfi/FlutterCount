@@ -26,6 +26,9 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   int counter = 0;
 
+  bool get isEmpty => counter == 0;
+  bool get isFull => counter == 20;
+
 //[É NECESSÁRIO PASSAR A MUDANÇA DE ESTADO DA TELA PARA O ELEMENTO]
   void decrement() {
     setState(() {
@@ -54,9 +57,9 @@ class _HomePageState extends State<HomePage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const Text(
-              "Lotação",
-              style: TextStyle(
+            Text(
+              isFull ? 'Lotado' : 'Pode Entrar',
+              style: const TextStyle(
                 fontSize: 35,
                 color: Colors.white,
                 fontWeight: FontWeight.w700,
@@ -67,9 +70,9 @@ class _HomePageState extends State<HomePage> {
               padding: EdgeInsets.all(32),
               child: Text(
                 counter.toString(),
-                style: const TextStyle(
+                style: TextStyle(
                   fontSize: 35,
-                  color: Colors.white,
+                  color: isFull ? Colors.red : Colors.white,
                   fontWeight: FontWeight.w700,
                 ),
               ),
@@ -78,9 +81,11 @@ class _HomePageState extends State<HomePage> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 TextButton(
-                  onPressed: decrement,
+                  //Quando passamos null para um botão ele é desabilitado
+                  onPressed: isEmpty ? null : decrement,
                   style: TextButton.styleFrom(
-                    backgroundColor: Colors.white,
+                    backgroundColor:
+                        isEmpty ? Colors.white.withOpacity(0.2) : Colors.white,
                     fixedSize: const Size(100, 100),
                     primary: Colors.black,
                     shape: RoundedRectangleBorder(
@@ -96,14 +101,15 @@ class _HomePageState extends State<HomePage> {
                 const SizedBox(width: 32),
                 TextButton(
                   style: TextButton.styleFrom(
-                    backgroundColor: Colors.white,
+                    backgroundColor:
+                        isFull ? Colors.white.withOpacity(0.2) : Colors.white,
                     fixedSize: const Size(100, 100),
                     primary: Colors.black,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(24),
                     ), //Passa dimensoes fixas - é responsivo?
                   ),
-                  onPressed: increment,
+                  onPressed: isFull ? null : increment,
                   child: const Text('Adcionar',
                       style: TextStyle(color: Colors.black, fontSize: 20)),
                 ),
